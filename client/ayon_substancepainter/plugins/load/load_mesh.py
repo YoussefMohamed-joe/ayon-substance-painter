@@ -10,6 +10,7 @@ from ayon_substancepainter.api.pipeline import (
     set_container_metadata,
     remove_container_metadata
 )
+from ayon_substancepainter.api.path_mapping import remap_path
 
 import substance_painter.project
 
@@ -165,7 +166,7 @@ class SubstanceLoadProjectMesh(load.LoaderPlugin):
             return
         if not substance_painter.project.is_open():
             # Allow to 'initialize' a new project
-            path = self.filepath_from_context(context)
+            path = remap_path(self.filepath_from_context(context))
             sp_settings = substance_painter.project.Settings(
                 import_cameras=result["import_cameras"],
                 normal_map_format=result["normal_map_format"],
@@ -188,7 +189,7 @@ class SubstanceLoadProjectMesh(load.LoaderPlugin):
                 else:
                     raise LoadError("Reload of mesh failed")
 
-            path = self.filepath_from_context(context)
+            path = remap_path(self.filepath_from_context(context))
             substance_painter.project.reload_mesh(path,
                                                   settings,
                                                   on_mesh_reload)
@@ -217,7 +218,7 @@ class SubstanceLoadProjectMesh(load.LoaderPlugin):
     def update(self, container, context):
         repre_entity = context["representation"]
 
-        path = get_representation_path(repre_entity)
+        path = remap_path(get_representation_path(repre_entity))
 
         # Reload the mesh
         container_options = container.get("options", {})
