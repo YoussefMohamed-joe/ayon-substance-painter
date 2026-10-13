@@ -192,10 +192,8 @@ class SubstanceHost(HostBase, IWorkfileHost, ILoadHost, IPublishHost):
             lambda: host_tools.show_scene_inventory(parent=parent)
         )
 
-        action = menu.addAction("Library...")
-        action.triggered.connect(
-            lambda: host_tools.show_library_loader(parent=parent)
-        )
+        # Rank: no "Library..." action. ayon-core 1.9.8 removed
+        # `host_tools.show_library_loader()`, so it raised AttributeError.
 
         menu.addSeparator()
         action = menu.addAction("Work Files...")
